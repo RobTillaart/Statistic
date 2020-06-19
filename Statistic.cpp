@@ -2,7 +2,7 @@
 //    FILE: Statistic.cpp
 //  AUTHOR: Rob dot Tillaart at gmail dot com
 //          modified at 0.3 by Gil Ross at physics dot org
-// VERSION: 0.4.0
+// VERSION: 0.4.1
 // PURPOSE: Recursive statistical library for Arduino
 //
 // NOTE: 2011-01-07 Gill Ross
@@ -52,7 +52,8 @@
 // 0.4.0   2020-05-13
 //         refactor
 //         Added flag to switch on the use of stdDev runtime. [idea marc.recksiedl]
-
+// 0.4.1   2020-06-19 fix library.json
+//
 
 #include "Statistic.h"
 
