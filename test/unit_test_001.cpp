@@ -65,7 +65,7 @@ unittest(test_basic)
   assertEqual(99, myStats.count());
   assertEqualFloat(0,   myStats.sum(), 0.0001);
   assertEqualFloat(1,   myStats.minimum(), 0.0001);
-  assertEqualFloat(0,   myStats.getAverage(), 0.0001);
+  assertEqualFloat(0,   myStats.average(), 0.0001);
   assertEqualFloat(100, myStats.maximum(),   0.0001);
   assertEqualFloat(0,   myStats.variance(), 0.0001);
   assertEqualFloat(0,   myStats.pop_stdev(), 0.0001);
@@ -74,7 +74,7 @@ unittest(test_basic)
   myStats.clear();
   assertEqualFloat(0,   myStats.sum(), 0.0001);
   assertEqualFloat(0,   myStats.minimum(), 0.0001);
-  assertEqualFloat(0,   myStats.getAverage(), 0.0001);
+  assertEqualFloat(0,   myStats.average(), 0.0001);
   assertEqualFloat(0,   myStats.maximum(),   0.0001);
   assertEqualFloat(0,   myStats.variance(), 0.0001);
   assertEqualFloat(0,   myStats.pop_stdev(), 0.0001);
