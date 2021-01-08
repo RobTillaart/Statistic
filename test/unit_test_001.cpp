@@ -47,10 +47,46 @@ unittest_teardown()
 
 unittest(test_constructor)
 {
-  fprintf(stderr, "VERSION: %s\n", );
-  
+  fprintf(stderr, "VERSION: %s\n", STATISTIC_LIB_VERSION);
+
+  Statistic myStats;
+  assertEqual(0, myStats.count());
+}
+
+
+
+unittest(test_basic)
+{
+  fprintf(stderr, "VERSION: %s\n", STATISTIC_LIB_VERSION);
+
+  Statistic myStats;
+
+  for (int i = 1; i < 100; i++) myStats.add(i);
+  assertEqual(99, myStats.count());
+  assertEqualFloat(0,   myStats.sum(), 0.0001);
+  assertEqualFloat(1,   myStats.minimum(), 0.0001);
+  assertEqualFloat(0,   myStats.getAverage(), 0.0001);
+  assertEqualFloat(100, myStats.maximum(),   0.0001);
+  assertEqualFloat(0,   myStats.variance(), 0.0001);
+  assertEqualFloat(0,   myStats.pop_stdev(), 0.0001);
+  assertEqualFloat(0,   myStats.unbiased_stdev(),   0.0001);
+
+  myStats.clear();
+  assertEqualFloat(0,   myStats.sum(), 0.0001);
+  assertEqualFloat(0,   myStats.minimum(), 0.0001);
+  assertEqualFloat(0,   myStats.getAverage(), 0.0001);
+  assertEqualFloat(0,   myStats.maximum(),   0.0001);
+  assertEqualFloat(0,   myStats.variance(), 0.0001);
+  assertEqualFloat(0,   myStats.pop_stdev(), 0.0001);
+  assertEqualFloat(0,   myStats.unbiased_stdev(),   0.0001);
+
+
+  assertEqual(0, myStats.count());
+
   assertEqual(1, 1);
 }
+
+
 
 unittest_main()
 
