@@ -63,22 +63,23 @@ unittest(test_basic)
 
   for (int i = 1; i < 100; i++) myStats.add(i);
   assertEqual(99, myStats.count());
-  assertEqualFloat(4950, myStats.sum(), 0.0001);
-  assertEqualFloat(1,    myStats.minimum(), 0.0001);
-  assertEqualFloat(50,   myStats.average(), 0.0001);
-  assertEqualFloat(99,   myStats.maximum(),   0.0001);
-  assertEqualFloat(816.667, myStats.variance(), 0.0001);
+  assertEqualFloat(4950,    myStats.sum(),       0.0001);
+  assertEqualFloat(1,       myStats.minimum(),   0.0001);
+  assertEqualFloat(50,      myStats.average(),   0.0001);
+  assertEqualFloat(99,      myStats.maximum(),   0.0001);
+  assertEqualFloat(816.667, myStats.variance(),  0.001);     // note 1 digit less
   assertEqualFloat(28.5774, myStats.pop_stdev(), 0.0001);
-  assertEqualFloat(28.7228, myStats.unbiased_stdev(),   0.0001);
+  assertEqualFloat(28.7228, myStats.unbiased_stdev(), 0.0001);
 
   myStats.clear();
-  assertEqualFloat(0,   myStats.sum(), 0.0001);
-  assertEqualFloat(0,   myStats.minimum(), 0.0001);
-  assertEqualFloat(0,   myStats.average(), 0.0001);
+  assertEqualFloat(0,   myStats.sum(),       0.0001);
+  assertEqualFloat(0,   myStats.minimum(),   0.0001);
+  assertEqualFloat(0,   myStats.average(),   0.0001);
   assertEqualFloat(0,   myStats.maximum(),   0.0001);
-  assertEqualFloat(0,   myStats.variance(), 0.0001);
+  assertEqualFloat(0,   myStats.variance(),  0.0001);
   assertEqualFloat(0,   myStats.pop_stdev(), 0.0001);
-  assertEqualFloat(0,   myStats.unbiased_stdev(),   0.0001);
+  assertEqualFloat(0,   myStats.unbiased_stdev(), 0.0001);
+
   assertEqual(0, myStats.count());
 
 }
