@@ -3,15 +3,17 @@
 //    FILE: Statistic.h
 //  AUTHOR: Rob dot Tillaart at gmail dot com
 //          modified at 0.3 by Gil Ross at physics dot org
-// VERSION: 0.4.1
+// VERSION: 0.4.2
 // PURPOSE: Recursive Statistical library for Arduino
 // HISTORY: See Statistic.cpp
 //
 
+
 #include <Arduino.h>
 #include <math.h>
 
-#define STATISTIC_LIB_VERSION "0.4.1"
+
+#define STATISTIC_LIB_VERSION       (F("0.4.2"))
 
 class Statistic
 {
