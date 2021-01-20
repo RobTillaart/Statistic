@@ -21,7 +21,8 @@ The stability of the formulas is improved by the help of Gil Ross (Thanks!)
 - **Statistic(bool useStdDev = true)** Constructor, default use the standard deviation
 functions. Setting this flag to **false** reduces math so slight increase of performance.
 - **void clear(bool useStdDev = true)** resets all variables.
-- **void add(float value)**
+- **float add(float value)** (since 0.4.3) returns value actually added to internal sum.
+If this is (much) different from what should be added it becomes time to call **clear()**
 - **uint32_t count()** returns zero if count == zero (of course)
 - **float sum()**      returns zero if count == zero
 - **float minimum()**  returns zero if count == zero
