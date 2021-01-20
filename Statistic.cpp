@@ -2,7 +2,7 @@
 //    FILE: Statistic.cpp
 //  AUTHOR: Rob dot Tillaart at gmail dot com
 //          modified at 0.3 by Gil Ross at physics dot org
-// VERSION: 0.4.2
+// VERSION: 0.4.3
 // PURPOSE: Recursive statistical library for Arduino
 //
 // NOTE: 2011-01-07 Gill Ross
@@ -54,6 +54,7 @@
 //          Added flag to switch on the use of stdDev runtime. [idea marc.recksiedl]
 //  0.4.1   2020-06-19  fix library.json
 //  0.4.2   2021-01-08  add Arduino-CI + unit tests
+//  0.4.3   2021-01-20  add() returns how much was actually added.
 
 
 #include "Statistic.h"
@@ -67,51 +68,53 @@ Statistic::Statistic(bool useStdDev)
 
 void Statistic::clear(bool useStdDev)	// useStdDev default true.
 {
-    _cnt = 0;
-    _sum = 0;
-    _min = 0;
-    _max = 0;
-    _useStdDev = useStdDev;
-    _ssqdif = 0.0;
-    // note not _ssq but sum of square differences
-    // which is SUM(from i = 1 to N) of f(i)-_ave_N)**2
+  _cnt = 0;
+  _sum = 0;
+  _min = 0;
+  _max = 0;
+  _useStdDev = useStdDev;
+  _ssqdif = 0.0;
+  // note not _ssq but sum of square differences
+  // which is SUM(from i = 1 to N) of f(i)-_ave_N)**2
 }
 
 
 // adds a new value to the data-set
-void Statistic::add(const float value)
+float Statistic::add(const float value)
 {
-    if (_cnt == 0)
-    {
-        _min = value;
-        _max = value;
-    } else {
-        if (value < _min) _min = value;
-        else if (value > _max) _max = value;
-    }
-    _sum += value;
-    _cnt++;
+  float previousSum = _sum;
+  if (_cnt == 0)
+  {
+    _min = value;
+    _max = value;
+  } else {
+    if (value < _min) _min = value;
+    else if (value > _max) _max = value;
+  }
+  _sum += value;
+  _cnt++;
 
-    if (_useStdDev && (_cnt > 1))
-    {
-        float _store = (_sum / _cnt - value);
-        _ssqdif = _ssqdif + _cnt * _store * _store / (_cnt - 1);
+  if (_useStdDev && (_cnt > 1))
+  {
+    float _store = (_sum / _cnt - value);
+    _ssqdif = _ssqdif + _cnt * _store * _store / (_cnt - 1);
 
-        // ~10% faster but limits the amount of samples to 65K as _cnt*_cnt overflows
-        // float _store = _sum - _cnt * value;
-        // _ssqdif = _ssqdif + _store * _store / (_cnt*_cnt - _cnt);
-        //
-        // solution:  TODO verify
-        // _ssqdif = _ssqdif + (_store * _store / _cnt) / (_cnt - 1);
-    }
+    // ~10% faster but limits the amount of samples to 65K as _cnt*_cnt overflows
+    // float _store = _sum - _cnt * value;
+    // _ssqdif = _ssqdif + _store * _store / (_cnt*_cnt - _cnt);
+    //
+    // solution:  TODO verify
+    // _ssqdif = _ssqdif + (_store * _store / _cnt) / (_cnt - 1);
+  }
+  return _sum - previousSum;
 }
 
 
 // returns the average of the data-set added sofar
 float Statistic::average() const
 {
-    if (_cnt == 0) return NAN; // prevent DIV0 error
-    return _sum / _cnt;
+  if (_cnt == 0) return NAN; // prevent DIV0 error
+  return _sum / _cnt;
 }
 
 
@@ -119,25 +122,25 @@ float Statistic::average() const
 // http://www.suite101.com/content/how-is-standard-deviation-used-a99084
 float Statistic::variance() const
 {
-    if (!_useStdDev) return NAN;
-    if (_cnt == 0) return NAN; // prevent DIV0 error
-    return _ssqdif / _cnt;
+  if (!_useStdDev) return NAN;
+  if (_cnt == 0) return NAN; // prevent DIV0 error
+  return _ssqdif / _cnt;
 }
 
 
 float Statistic::pop_stdev() const
 {
-    if (!_useStdDev) return NAN;
-    if (_cnt == 0) return NAN; // prevent DIV0 error
-    return sqrt( _ssqdif / _cnt);
+  if (!_useStdDev) return NAN;
+  if (_cnt == 0) return NAN; // prevent DIV0 error
+  return sqrt( _ssqdif / _cnt);
 }
 
 
 float Statistic::unbiased_stdev() const
 {
-    if (!_useStdDev) return NAN;
-    if (_cnt < 2) return NAN; // prevent DIV0 error
-    return sqrt( _ssqdif / (_cnt - 1));
+  if (!_useStdDev) return NAN;
+  if (_cnt < 2) return NAN; // prevent DIV0 error
+  return sqrt( _ssqdif / (_cnt - 1));
 }
 
 // -- END OF FILE --
