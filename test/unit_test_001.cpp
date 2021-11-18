@@ -29,6 +29,7 @@
 // assertNAN(arg);                                 // isnan(a)
 // assertNotNAN(arg);                              // !isnan(a)
 
+
 #include <ArduinoUnitTests.h>
 
 
@@ -47,7 +48,7 @@ unittest_teardown()
 
 unittest(test_constructor)
 {
-  fprintf(stderr, "VERSION: %s\n", STATISTIC_LIB_VERSION);
+  fprintf(stderr, "\nSTATISTIC_LIB_VERSION: %s\n", (char *) STATISTIC_LIB_VERSION);
 
   Statistic myStats;
   assertEqual(0, myStats.count());
@@ -57,7 +58,7 @@ unittest(test_constructor)
 
 unittest(test_basic)
 {
-  fprintf(stderr, "VERSION: %s\n", STATISTIC_LIB_VERSION);
+  fprintf(stderr, "\nSTATISTIC_LIB_VERSION: %s\n", (char *) STATISTIC_LIB_VERSION);
 
   Statistic myStats;
 

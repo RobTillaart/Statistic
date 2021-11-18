@@ -6,9 +6,11 @@
 //          internal sum is orders of magnitude larger
 //          than the added value.
 
+
 #include "Statistic.h"
 
 Statistic myStats;
+
 
 void setup(void)
 {
@@ -53,9 +55,11 @@ void setup(void)
    Serial.print("\nQED...");
 }
 
+
 void loop(void)
 {
-
 }
 
+
 // -- END OF FILE --
+

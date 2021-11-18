@@ -5,6 +5,7 @@
 // PURPOSE: measure time difference for runtime stddev toggle.
 //          add is 1024 millis faster for 10K adds ==> ~ 100uSec per add faster.
 
+
 #include "Statistic.h"
 
 Statistic myStats;
@@ -13,6 +14,7 @@ uint32_t start;
 uint32_t stop;
 
 bool useStdDev = true;
+
 
 void setup(void)
 {
@@ -23,6 +25,7 @@ void setup(void)
   myStats.clear(useStdDev);
   start = millis();
 }
+
 
 void loop(void)
 {
@@ -57,4 +60,6 @@ void loop(void)
   }
 }
 
+
 // -- END OF FILE --
+

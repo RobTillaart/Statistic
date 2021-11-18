@@ -143,4 +143,6 @@ float Statistic::unbiased_stdev() const
   return sqrt( _ssqdif / (_cnt - 1));
 }
 
+
 // -- END OF FILE --
+

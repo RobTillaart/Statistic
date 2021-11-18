@@ -13,7 +13,8 @@
 #include <math.h>
 
 
-#define STATISTIC_LIB_VERSION       (F("0.4.3"))
+#define STATISTIC_LIB_VERSION                     (F("0.4.3"))
+
 
 class Statistic
 {
@@ -47,4 +48,6 @@ protected:
 
 };
 
+
 // -- END OF FILE -- 
+
