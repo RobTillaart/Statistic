@@ -1,9 +1,7 @@
 //
 //    FILE: StatisticArray.ino
-//  AUTHOR: Rob dot Tillaart at gmail dot com
-// VERSION: 0.1
+//  AUTHOR: Rob Tillaart
 // PURPOSE: Sample sketch for statistic library Arduino
-//
 
 
 #include "Statistic.h"

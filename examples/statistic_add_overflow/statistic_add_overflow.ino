@@ -1,10 +1,8 @@
 //
 //    FILE: TimingTest.ino
-//  AUTHOR: Rob dot Tillaart at gmail dot com
-// VERSION: 0.2.0
-// PURPOSE: this sketch shows a known problem when
-//          internal sum is orders of magnitude larger
-//          than the added value.
+//  AUTHOR: Rob Tillaart
+// PURPOSE: this sketch shows a known (rounding) problem when the
+//          internal sum is orders of magnitude larger than the added value.
 
 
 #include "Statistic.h"
