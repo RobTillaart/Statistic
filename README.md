@@ -8,8 +8,25 @@
 
 # Statistic
 
-Statistic library for Arduino includes sum, average, variance and standard deviation.
+Header-only statistic library for Arduino includes sum, average, variance and standard deviation.
 
+The `stat::Statistic<T, C, bool _useStdDev>` class template accepts 3 arguments:
+
+* **`typename T`:** The floating point type used to represent the statistics.
+* **`typename C`:** The unsigned integer type to store the number of values.
+* **`typename _useStdDev`:** Compile-time flag for using variance and standard deviation.
+
+To maintain backwards compatibility with API <= 0.4.4, the `Statistic`
+class implementation has been moved to the `stat` namespace and a
+`typedef stat::Statistic<float, uint32_t, true> Statistic` type
+definition has been created at global scope.
+
+The `useStdDev` boolean was moved from a run-time to a compile-time
+option for two reasons.  First, the compile-time option allows the
+optimizer to eliminate dead code (calcuating standard deviation and
+variances) for a slightly smaller code size.  Second, it was observed
+in uses of the library that the `useStdDev` boolean was set once in
+the class constructor and was never modified at run-time.
 
 ## Description
 
@@ -21,9 +38,8 @@ The stability of the formulas is improved by the help of Gil Ross (Thanks!)
 
 ## Interface
 
-- **Statistic(bool useStdDev = true)** Constructor, default use the standard deviation.
-functions. Setting this flag to **false** reduces math so slight increase of performance.
-- **void clear(bool useStdDev = true)** resets all variables.
+- **Statistic(void)** Default constructor.
+- **void clear()** resets all variables.
 - **float add(float value)** (since 0.4.3) returns value actually added to internal sum.
 If this is (much) different from what should be added it might become time to call **clear()**.
 - **uint32_t count()** returns zero if count == zero (of course).
@@ -38,6 +54,11 @@ These three functions only work if **useStdDev == true**
 - **pop_stdev()**        population stdev, returns NAN if count == zero.
 - **unbiased_stdev()**   returns NAN if count == zero.
 
+Deprecated methods:
+
+- **Statistic(bool)** Constructor previously used to enable/disable the standard deviation
+functions. This argument now has no effect.  It is recommended to migrate your code to the default constructor (which now also implicitly calls `clear()`).
+- **void clear(bool)** resets all variables.  The boolean argument is ignored. It is recommended to migrate your code to `clear()` (with no arguments).
 
 ## Operational
 
