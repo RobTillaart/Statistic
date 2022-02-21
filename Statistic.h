@@ -139,13 +139,13 @@ protected:
   struct Empty {
     void clear() { }
     value_type ssqdif() const { return NaN; }
-    value_type ssqdif(value_type v) { }
+    void ssqdif(value_type v) { }
   };
   struct StdDev {
     value_type    _ssqdif { 0.0 };    // sum of squares difference
     void clear() { _ssqdif = 0.0; }
     value_type ssqdif() const { return _ssqdif; }
-    value_type ssqdif(value_type v) { _ssqdif = v; }
+    void ssqdif(value_type v) { _ssqdif = v; }
   };
   typename std::conditional<_useStdDev, StdDev, Empty>::type _extra;
 };
