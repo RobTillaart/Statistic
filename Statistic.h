@@ -29,10 +29,36 @@
 // deliver max min average, population standard error (standard deviation) and
 // unbiased SE.
 
+#if defined (ARDUINO_AVR_UNO)
+#if !defined(HAVE_STD_CONDITIONAL)
+// Since Arduino UNO does not have type_traits, create
+// std::conditional template here.
+namespace std {
+  template<bool B, class T, class F>
+  struct conditional { typedef T type; };
+  template<class T, class F>
+  struct conditional<false, T, F> { typedef F type; };
+};
+#endif /* !HAVE_STD_CONDITIONAL */
+#include <math.h>
+#if !defined(HAVE_STD_SQRT)
+// In the Arduino UNO compiler envionment, there is no <cmath> header
+// file. The following redirections are needed to remap the math
+// functions in the root namespace ("::sqrt") to the std namespace
+// ("std::sqrt"), as defined in <cmath>.
+namespace std {
+  float sqrt(float n) { return ::sqrt(n); }
+  double sqrt(double n) { return ::sqrt(n); }
+  long double sqrt(long double n) { return ::sqrt(n); }
+};
+#endif /* !HAVE_STD_SQRT */
+#include <stdint.h> // uint32_t, etc.
+#else
 #include <limits>
 #include <type_traits>
 #include <cstdint>
 #include <cmath>
+#endif /* ARDUINO_AVR_UNO */
 
 
 #define STATISTIC_LIB_VERSION                     (F("0.4.4"))
@@ -43,12 +69,25 @@ template <typename T = float, typename C = uint32_t, bool _useStdDev = true>
 class Statistic
 {
 public:
-  static_assert (std::is_floating_point<T>::value, "Statistic<T,C>: T must be a floating point type (float, double, etc)");
-  static_assert (std::is_unsigned<C>::value, "Statistic<T,C>: C must be an unsigned type");
-
   typedef T value_type;
   typedef C count_type;
+
+#if defined (ARDUINO_AVR_UNO)
+  // The UNO compiler environment does not have type_traits, so we
+  // cannot do any compile-time verification that T is a floating
+  // point type or C is an unsigned integer tyoe.
+#else
+  static_assert (std::is_floating_point<T>::value, "Statistic<T,C>: T must be a floating point type (float, double, etc)");
+  static_assert (std::is_unsigned<C>::value, "Statistic<T,C>: C must be an unsigned type");
+#endif /* ARDUINO_AVR_UNO */
+
+#if defined (ARDUINO_AVR_UNO)
+  // TODO: verify that this works when T is double & long double.  I
+  // suspect that this does not.
+  static constexpr value_type NaN { NAN };
+#else
   static constexpr value_type NaN { std::numeric_limits<value_type>::quiet_NaN() };
+#endif /* ARDUINO_AVR_UNO */
 
   Statistic() = default;
 

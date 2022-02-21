@@ -6,7 +6,7 @@
 
 #include "Statistic.h"
 
-stat::Statistic<double, uint64_t, true> myStats;
+stat::Statistic<float, uint32_t, true> myStats;
 
 uint32_t start;
 uint32_t stop;
