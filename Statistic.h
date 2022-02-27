@@ -230,9 +230,8 @@ protected:
 // versions <= 0.4.4.
 typedef statistic::Statistic<float, uint32_t, true> Statistic;
 
-// NOTE:
-// Do not issue 'using stat;' in your code because the compiler will
-// not be able to distinguish between '::Statistic' and
-// 'stat::Statistic'
+// NOTE: Do not issue 'using statistic;' in your code because the
+// compiler will not be able to distinguish between the template
+// '::Statistic' and the typedef 'statistic::Statistic'
 
 // -- END OF FILE --
