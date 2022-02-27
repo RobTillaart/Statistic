@@ -29,41 +29,91 @@
 // deliver max min average, population standard error (standard deviation) and
 // unbiased SE.
 
-#if defined (ARDUINO_AVR_UNO)
-#if !defined(HAVE_STD_CONDITIONAL)
-// Since Arduino UNO does not have type_traits, create
-// std::conditional template here.
+// Toolchains for some platforms don't have the stdc++ library, so
+// we'll make substitutions for features that we use.  If your
+// platform isn't specified here and fails to compile, then you can
+// explicitly override the HAVE_STDCXX_TYPE_TRAITS, HAVE_STDCXX_CMATH,
+// and HAVE_STDCXX_CSTDINT feature macros in your build environment.
+#if defined (ARDUINO_AVR_UNO) || defined(ARDUINO_AVR_LEONARDO) || defined(ARDUINO_AVR_MEGA2560)
+#define HAVE_STDCXX_TYPE_TRAITS 0
+#define HAVE_STDCXX_CMATH 0
+#define HAVE_STDCXX_CSTDINT 0
+#else
+#ifndef(HAVE_STDCXX_TYPE_TRAITS)
+#define HAVE_STDCXX_TYPE_TRAITS 1
+#endif
+#ifndef(HAVE_STDCXX_CMATH)
+#define HAVE_STDCXX_CMATH 1
+#endif
+#ifndef(HAVE_STDCXX_CSTDINT)
+#define HAVE_STDCXX_CSTDINT 1
+#endif
+#endif
+
+#if HAVE_STDCXX_TYPE_TRAITS || defined(_GLIBCXX_TYPE_TRAITS)
+#include <type_traits>
+#else
 namespace std {
+  // substitute for std::conditional if not in your tool chain
   template<bool B, class T, class F>
   struct conditional { typedef T type; };
   template<class T, class F>
   struct conditional<false, T, F> { typedef F type; };
 };
-#endif /* !HAVE_STD_CONDITIONAL */
-#include <math.h>
-#if !defined(HAVE_STD_SQRT)
-// In the Arduino UNO compiler envionment, there is no <cmath> header
-// file. The following redirections are needed to remap the math
-// functions in the root namespace ("::sqrt") to the std namespace
-// ("std::sqrt"), as defined in <cmath>.
-namespace std {
-  float sqrt(float n) { return ::sqrt(n); }
-  double sqrt(double n) { return ::sqrt(n); }
-  long double sqrt(long double n) { return ::sqrt(n); }
-};
-#endif /* !HAVE_STD_SQRT */
-#include <stdint.h> // uint32_t, etc.
-#else
-#include <limits>
-#include <type_traits>
-#include <cstdint>
+#endif /* HAVE_STDCXX_TYPE_TRAITS */
+
+
+#if HAVE_STDCXX_CMATH || defined(_GLIBCXX_CMATH)
 #include <cmath>
-#endif /* ARDUINO_AVR_UNO */
+#else
+#include <math.h>
+// substitute for std::sqrt functions if not in your tool chain
+#undef sqrt
+namespace std {
+  inline float sqrt(float n) { return __builtin_sqrtf(n); }
+  inline double sqrt(double n) { return __builtin_sqrt(n); }
+  inline long double sqrt(long double n) { return __builtin_sqrtl(n); }
+};
+#endif /* HAVE_STDCXX_CMATH */
+
+
+#if HAVE_STDCXX_CSTDINT || defined(_GLIBCXX_CSTDINT)
+#include <cstdint>
+#else
+#include <stdint.h> // uint32_t, etc.
+#endif /* HAVE_STDCXX_CSTDINT */
+
+#if HAVE_STDCXX_LIMITS || defined(_GLIBCXX_NUMERIC_LIMITS)
+#include <limits>
+#else
+namespace std {
+  template<typename T>
+  struct numeric_limits {
+    static constexpr T
+    quiet_NaN() { return T(); }
+  };
+  template<>
+  struct numeric_limits<float> {
+    static constexpr float
+    quiet_NaN() { return __builtin_nanf(""); }
+  };
+  template<>
+  struct numeric_limits<double> {
+    static constexpr double
+    quiet_NaN() { return __builtin_nan(""); }
+  };
+  template<>
+  struct numeric_limits<long double> {
+    static constexpr long double
+    quiet_NaN() { return __builtin_nanl(""); }
+  };
+};
+#endif /* HAVE_STDCXX_LIMITS */
 
 
 #define STATISTIC_LIB_VERSION                     (F("0.4.4"))
 
-namespace stat {
+namespace statistic {
 
 template <typename T = float, typename C = uint32_t, bool _useStdDev = true>
 class Statistic
@@ -72,22 +122,7 @@ public:
   typedef T value_type;
   typedef C count_type;
 
-#if defined (ARDUINO_AVR_UNO)
-  // The UNO compiler environment does not have type_traits, so we
-  // cannot do any compile-time verification that T is a floating
-  // point type or C is an unsigned integer tyoe.
-#else
-  static_assert (std::is_floating_point<T>::value, "Statistic<T,C>: T must be a floating point type (float, double, etc)");
-  static_assert (std::is_unsigned<C>::value, "Statistic<T,C>: C must be an unsigned type");
-#endif /* ARDUINO_AVR_UNO */
-
-#if defined (ARDUINO_AVR_UNO)
-  // TODO: verify that this works when T is double & long double.  I
-  // suspect that this does not.
-  static constexpr value_type NaN { NAN };
-#else
   static constexpr value_type NaN { std::numeric_limits<value_type>::quiet_NaN() };
-#endif /* ARDUINO_AVR_UNO */
 
   Statistic() = default;
 
@@ -193,7 +228,7 @@ protected:
 
 // This typedef maintains backwards API compatibility with library
 // versions <= 0.4.4.
-typedef stat::Statistic<float, uint32_t, true> Statistic;
+typedef statistic::Statistic<float, uint32_t, true> Statistic;
 
 // NOTE:
 // Do not issue 'using stat;' in your code because the compiler will
