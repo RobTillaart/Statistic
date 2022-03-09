@@ -34,9 +34,9 @@ the class constructor and was never modified at run-time.
 The statistic library is made to get basic statistical information from a 
 one dimensional set of data, e.g. a stream of values of a sensor.
 
-The stability of the formulas is improved by the help of Gil Ross (Thanks!)
+The stability of the formulas is improved by the help of Gil Ross (Thanks!).
 
-The template version (1.0.0) is created by Glen Cornell.
+The template version (1.0.0) is created by Glen Cornell  (Thanks!).
 
 
 ## Interface
@@ -51,7 +51,7 @@ You can override e.g. **statistic::Statistic<double, uint64_t, false>** for many
 If this differs from what should have been added, or even zero, the internal administration is running out of precision.
 If this happens after a lot of **add()** calls, it might become time to call **clear()**.
 Alternatively one need to define the statistic object with a more precise data type (typical double instead of float).
-- **typename C count()**    returns zero if count == zero (of course). Must be checked to interpret other values
+- **typename C count()**    returns zero if count == zero (of course). Must be checked to interpret other values.
 - **typename T sum()**      returns zero if count == zero.
 - **typename T minimum()**  returns zero if count == zero.
 - **typename T maximum()**  returns zero if count == zero.
@@ -65,8 +65,11 @@ These three functions only work if **useStdDev == true** (in the template).
 
 Deprecated methods:
 
-- **Statistic(bool)** Constructor previously used to enable/disable the standard deviation functions. This argument now has no effect.  It is recommended to migrate your code to the default constructor (which now also implicitly calls `clear()`).
-- **void clear(bool)** resets all variables.  The boolean argument is ignored. It is recommended to migrate your code to `clear()` (with no arguments).
+- **Statistic(bool)** Constructor previously used to enable/disable the standard deviation functions. 
+This argument now has no effect.  It is recommended to migrate your code to the default constructor 
+(which now also implicitly calls `clear()`).
+- **void clear(bool)** resets all variables.  The boolean argument is ignored. 
+It is recommended to migrate your code to `clear()` (with no arguments).
 
 
 ## Operational
