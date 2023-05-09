@@ -72,6 +72,10 @@ namespace std {
 
 #if HAVE_STDCXX_CMATH || defined(_GLIBCXX_CMATH)
 #include <cmath>
+#undef sqrtf
+namespace std {
+  inline float sqrtf(float n) { return __builtin_sqrtf(n); }
+};
 #else
 #include <math.h>
 //  substitute for std::sqrt functions if not in your tool chain
@@ -80,10 +84,6 @@ namespace std {
   inline float sqrt(float n) { return __builtin_sqrtf(n); }
   inline double sqrt(double n) { return __builtin_sqrt(n); }
   inline long double sqrt(long double n) { return __builtin_sqrtl(n); }
-};
-#undef sqrtf
-namespace std {
-  inline float sqrtf(float n) { return __builtin_sqrtf(n); }
 };
 #endif  /*  HAVE_STDCXX_CMATH */
 
