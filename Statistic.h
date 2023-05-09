@@ -4,7 +4,7 @@
 //  AUTHOR: Rob Tillaart
 //          modified at 0.3 by Gil Ross at physics dot org
 //          template version 1.0.0 by Glen Cornell
-// VERSION: 1.0.2
+// VERSION: 1.0.3
 // PURPOSE: Recursive Statistical library for Arduino
 // HISTORY: See CHANGELOG.md
 //
@@ -80,6 +80,10 @@ namespace std {
   inline float sqrt(float n) { return __builtin_sqrtf(n); }
   inline double sqrt(double n) { return __builtin_sqrt(n); }
   inline long double sqrt(long double n) { return __builtin_sqrtl(n); }
+};
+#undef sqrtf
+namespace std {
+  inline float sqrtf(float n) { return __builtin_sqrtf(n); }
 };
 #endif  /*  HAVE_STDCXX_CMATH */
 
