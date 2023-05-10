@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [1.0.3] - 2023-05-09
 - fix #13 **sqrtf()** missing
+- prep more correct NaN when \_cnt == 0;
 
 
 ## [1.0.2] - 2023-03-14
