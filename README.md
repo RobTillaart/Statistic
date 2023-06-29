@@ -74,6 +74,8 @@ Alternatively one need to define the statistic object with a more precise data t
 - **typename T sum()**      returns zero if count == zero.
 - **typename T minimum()**  returns zero if count == zero.
 - **typename T maximum()**  returns zero if count == zero.
+- **typename T range()**    returns maximum - minimum.
+- **typename T middle()**   returns (minimum + maximum)/2. If T is an integer type rounding errors are possible
 - **typename T average()**  returns NAN  if count == zero.
 
 These three functions only work if **useStdDev == true** (in the template).
