@@ -77,9 +77,9 @@ Alternatively one need to define the statistic object with a more precise data t
 - **typename T sum()**      returns zero if count == zero.
 - **typename T minimum()**  returns zero if count == zero.
 - **typename T maximum()**  returns zero if count == zero.
-- **typename T range()**    returns maximum - minimum.
-- **typename T middle()**   returns (minimum + maximum)/2. If T is an integer type rounding errors are possible
-- **typename T average()**  returns NAN  if count == zero.
+- **typename T range()**    returns maximum - minimum. 
+- **typename T middle()**   returns (minimum + maximum)/2. If T is an integer type rounding errors are possible.
+- **typename T average()**  returns NAN if count == zero.
 
 These three functions only work if **useStdDev == true** (in the template).
 
@@ -89,13 +89,27 @@ pop_stdev = population standard deviation,
 - **typename T unbiased_stdev()** returns NAN if count == zero.
 
 
-#### Deprecated methods:
+#### Deprecated methods
 
 - **Statistic(bool)** Constructor previously used to enable/disable the standard deviation functions. 
 This argument now has no effect.  It is recommended to migrate your code to the default constructor 
 (which now also implicitly calls `clear()`).
 - **void clear(bool)** resets all variables.  The boolean argument is ignored. 
 It is recommended to migrate your code to `clear()` (with no arguments).
+
+
+#### Range() and middle()
+
+**Range()** and **middle()** are fast functions with limited statistical value. 
+Still they have their uses.
+
+Given enough samples (e.g. 100+) and a normal distribution of the samples the **range()** is expected 
+to be 3 to 4 times the **pop_stdev()**. 
+If the range is larger than 4 standard deviations one might have added one or more outliers.
+
+Given enough samples (e.g. 100+) and a normal distribution, the **middle()** and **average()** are 
+expected to be close to each other.
+Note: outliers can disrupt the **middle()**, Several non-normal distributions do too.
 
 
 ## Operational

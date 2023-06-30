@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - fix #18 add **range()** and **middle()**
   - fast first order functions, based on minimum() and maximum()
   - statistic value is (very) limited.
+  - add example.
 - update readme.md
 
 
