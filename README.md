@@ -38,10 +38,12 @@ The stability of the formulas is improved by the help of Gil Ross (Thanks!).
 
 The template version (1.0.0) is created by Glen Cornell  (Thanks!).
 
+
 #### Related
 
 - https://github.com/RobTillaart/Correlation
 - https://github.com/RobTillaart/GST - Golden standard test metrics
+- https://github.com/RobTillaart/Histogram
 - https://github.com/RobTillaart/RunningAngle
 - https://github.com/RobTillaart/RunningAverage
 - https://github.com/RobTillaart/RunningMedian
@@ -63,6 +65,7 @@ The types mentioned are the defaults of the template.
 You can override e.g. **statistic::Statistic<double, uint64_t, false>** for many high precision values. 
 (assumes double >> float).
 - **void clear()** resets all internal variables and counters.
+
 
 #### Core
 
@@ -114,13 +117,7 @@ See https://github.com/RobTillaart/Statistic/blob/master/FAQ.md
 
 #### Should
 
-- return values of **sum(), minimum(), maximum()** when **count()** == zero
-  - should these be NaN, which is technically more correct?
-  - does it exist for all value types? => No!
-  - for now user responsibility to check **count()** first.
-  - refactor \_cnt to \_count
 - remove deprecated methods. (1.1.0)
-
 
 #### Could
 
@@ -132,7 +129,14 @@ See https://github.com/RobTillaart/Statistic/blob/master/FAQ.md
   - do not forget to add **EA** times count for sum.
   - does not affect the **std_dev()**
   - all functions will become slightly slower.
-
+  - maybe in a derived class?
+- **lastTimeAdd()** convenience, user can track timestamp
+- **largestDelta()** largest difference between two consecutive additions.
+  - need lastValue + delta so far.
 
 #### Wont
 
+- return values of **sum(), minimum(), maximum()** when **count()** == zero
+  - should these be NaN, which is technically more correct?
+  - does it exist for all value types? => No!
+  - user responsibility to check **count()** first.
