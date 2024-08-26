@@ -72,11 +72,13 @@ namespace std {
 
 #if HAVE_STDCXX_CMATH || defined(_GLIBCXX_CMATH)
 #include <cmath>
+#if not defined(__cplusplus) || __cplusplus < 201703L
 //  substitute for std::sqrtf function, patch for issue #13
 #undef sqrtf
 namespace std {
   inline float sqrtf(float n) { return __builtin_sqrtf(n); }
 };
+#endif
 #else
 #include <math.h>
 //  substitute for std::sqrt functions if not in your tool chain
